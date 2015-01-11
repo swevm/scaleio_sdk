@@ -1,6 +1,6 @@
 from lib import scaleio
 
-connection = scaleio.sdk(debug = False)
+connection = sdk.sdk(debug = False)
 connection.login('192.168.100.42', 'admin', 'Password1!')
 
 #Get Dictionary of Volumes

@@ -1,7 +1,9 @@
-from lib import scaleio
+from lib import sdk
 
-connection = scaleio.sdk(debug = False)
+connection = sdk.sdk(debug = True)
 connection.login('192.168.100.42', 'admin', 'Password1!')
+
+sdcIpDict = connection.listSdcByIp()
 
 sdcDict = connection.listSdc()
 print "SIO SDCs"
