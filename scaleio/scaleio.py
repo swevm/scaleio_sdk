@@ -472,8 +472,8 @@ class ScaleIO(SIO_Generic_Object):
         Using kwargs it will be possible to tell delete_volume() to unmap all SDCs before delting. Not working yet
         """
         self._check_login() 
-        unmapVolumeFromSdcDict = {'removeMode': removeMode}
-        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volObj.id, 'action/removeVolume'), json=unmapVolumeFromSdcDict)    
+        deleteVolumeDict = {'removeMode': removeMode}
+        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volObj.id, 'action/removeVolume'), json=deleteVolumeDict)    
         return response
     
 if __name__ == "__main__":
