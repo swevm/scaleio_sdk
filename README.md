@@ -2,7 +2,7 @@
 
 #### A module for interacting with the EMC ScaleIO 1.3+ REST API.
 
-Authors: Magnus Nilson & Matt Cowger
+Authors: Magnus Nilsson & Matt Cowger
 
 Requirements:
 
@@ -28,4 +28,17 @@ pprint(sio.volumes)
 
 #print all the known Protection Domains:
 pprint(sio.protection_domains)
+
+#Create a new Volume
+sio.create_volume_by_pd_name('testvol001', 8192, sio.get_pd_by_name('default'))
+
+#Map Volume to SDC (get_sdc_by_ip('ipaddr') can be used also to map against an SDC)
+sio.map_volume_to_sdc(sio.get_volume_by_name('testvol'), sio.get_sdc_by_id('ce4d7e2a00000001'), False)
+
+#Unmap Volume from SDC
+sio.unmap_volume_from_sdc(sio.get_volume_by_name('testvol'), sio.get_sdc_by_id('ce4d7e2a00000001'))
+
+#Delete Volume
+sio.delete_volume(sio.get_volume_by_name('testvol'), 'ONLY_ME')
+
 
