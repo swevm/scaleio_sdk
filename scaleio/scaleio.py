@@ -93,6 +93,7 @@ class ScaleIO_Volume(SIO_Generic_Object):
         self.consistency_group_id=consistencyGroupId
         self.creation_time=time.gmtime(creationTime)
         self.id=id
+        self.name = name
         self.is_obfuscated = isObfuscated
         self.mapped_scsi_initiators = mappedScsiInitiatorInfo
         self.mapped_sdcs = mappedSdcInfo
@@ -125,6 +126,9 @@ class ScaleIO_SDC(SIO_Generic_Object):
     ):
 
         self.id = id
+        self.name = name
+        self.mdmConnectionState = mdmConnectionState
+        self.sdcIp = sdcIp
         self.links = []
         for link in links:
             self.links.append(Link(link['href'], link['rel']))
@@ -257,7 +261,7 @@ class ScaleIO(SIO_Generic_Object):
         self._verify_ssl = verify_ssl
         self._logged_in = False
         requests.packages.urllib3.disable_warnings() # Disable unverified connection warning.
-
+    
     def _login(self):
         logging.info("Logging into " + "{}/{}".format(self._api_url, "login"))
         login_response = self._session.get(
@@ -276,6 +280,14 @@ class ScaleIO(SIO_Generic_Object):
             pass
         return None
 
+    def _do_post(self, url, **kwargs):
+        """
+        Convinient method for POST requests
+        Returns http request status value from a POST request
+        """
+        scaleioapi_post_headers = {'Content-type':'application/json','Version':'1.0'}
+        response = self._session.post(url, headers=scaleioapi_post_headers, **kwargs)
+        return response
 
     @property
     def sdc(self):
@@ -354,7 +366,7 @@ class ScaleIO(SIO_Generic_Object):
         all_pds = []
 
         for pd in response:
-
+            #pprint(pd)
             all_pds.append(
                 ScaleIO_Protection_Domain.from_dict(pd)
             )
@@ -368,6 +380,14 @@ class ScaleIO(SIO_Generic_Object):
 
         raise KeyError("SDS of that name not found")
 
+    def get_sds_by_ip(self,ip):
+        for sds in self.sds:
+            for sdsIp in sds.ipList:
+                if sdsIp == ip:
+                    return sds
+
+        raise KeyError("SDS of that name not found")
+    
     def get_sds_by_id(self,id):
         for sds in self.sds:
             if sds.id == id:
@@ -387,6 +407,13 @@ class ScaleIO(SIO_Generic_Object):
                 return sdc
         raise KeyError("SDC with that ID not found")
 
+    def get_sdc_by_ip(self, ip):
+        for sdc in self.sdc:
+            if sdc.sdcIp == ip:
+                return sdc
+
+        raise KeyError("SDC of that name not found")
+
     def get_pd_by_name(self, name):
         for pd in self.protection_domains:
             if pd.name == name:
@@ -399,13 +426,64 @@ class ScaleIO(SIO_Generic_Object):
             if pd.id == id:
                 return pd
         raise KeyError("Protection Domain with that ID not found")
+    
+        
+    def get_volume_by_id(self, id):
+        for vol in self.volumes:
+            if vol.id == id:
+                return vol
+        raise KeyError("Volume with that ID not found")
 
+    def get_volume_by_name(self, name):
+        for vol in self.volumes:
+            print "vol.name = " + vol.name
+            if vol.name == name:
+                return vol
+        raise KeyError("Volume with that NAME not found")
+        
+    def create_volume_by_pd_name(self, volName, volSizeInMb, pdObj, thinProvision=True, **kwargs):
+        self._check_login()
+        if kwargs:
+            print "Map created volume to SDC(s)"
+        if thinProvision:
+            volType = 'ThinProvisioned'
+        else:
+            volType = 'ThickProvisioned'
+        volumeDict = {'protectionDomainId': pdObj.id, 'volumeSizeInKb': str(volSizeInMb * 1024),  'name': volName, 'volumeType': volType}
+        pprint(volumeDict)
+        response = self._do_post("{}/{}".format(self._api_url, "types/Volume/instances"), json=volumeDict)
+        return response
+ 
+    def map_volume_to_sdc(self, volumeObj, sdcObj, allowMultipleMappings=False):
+        self._check_login()        
+        mapVolumeToSdcDict = {'sdcId': sdcObj.id, 'allowMultipleMappings': str(allowMultipleMappings).upper()}
+        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volumeObj.id, 'action/addMappedSdc'), json=mapVolumeToSdcDict)
+        return response
+    
+    def unmap_volume_from_sdc(self, volObj, sdcObj):
+        self._check_login() 
+        unmapVolumeFromSdcDict = {'sdcId': sdcObj.id}
+        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volObj.id, 'action/removeMappedSdc'), json=unmapVolumeFromSdcDict)    
+        return response
 
-
+    def delete_volume(self, volObj, removeMode='ONLY_ME', **kwargs):
+        """
+        removeMode = 'ONLY_ME' | 'INCLUDING_DESCENDANTS' | 'DESCENDANTS_ONLY' | 'WHOLE_VTREE'
+        Using kwargs it will be possible to tell delete_volume() to unmap all SDCs before delting. Not working yet
+        """
+        self._check_login() 
+        unmapVolumeFromSdcDict = {'removeMode': removeMode}
+        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volObj.id, 'action/removeVolume'), json=unmapVolumeFromSdcDict)    
+        return response
+    
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s: %(levelname)s %(module)s:%(funcName)s | %(message)s', level=logging.WARNING)
-    sio = ScaleIO("http://192.168.50.12/api","admin","Scaleio123",verify_ssl=False)
+    sio = ScaleIO("https://192.168.100.42/api","admin","Password1!",verify_ssl=False) # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
     pprint(sio.sdc)
     pprint(sio.sds)
     pprint(sio.volumes)
     pprint(sio.protection_domains)
+    #sio.create_volume_by_pd_name('testvol001', 8192, sio.get_pd_by_name('default'))
+    #sio.map_volume_to_sdc(sio.get_volume_by_name('testvol009'), sio.get_sdc_by_id('ce4d7e2a00000001'), False)
+    #sio.unmap_volume_from_sdc(sio.get_volume_by_name('testvol009'), sio.get_sdc_by_id('ce4d7e2a00000001'))
+    #sio.delete_volume(sio.get_volume_by_name('testvol009'), 'ONLY_ME')
