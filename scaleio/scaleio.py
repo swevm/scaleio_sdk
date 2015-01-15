@@ -29,6 +29,77 @@ class SIO_Generic_Object(object):
     def __repr__(self):
         return self.__str__()
 
+class ScaleIO_System(SIO_Generic_Object):
+    def __init__(self,
+        id=None,
+        name=None,
+        systemVersionName=None,
+        primaryMdmActorIpList = None, #List
+        primaryMdmActorPort = None,
+        secondaryMdmActorIpList = None, #List
+        secondaryMdmActorPort = None, 
+        tiebreakerMdmIpList = None,  #List
+        tiebreakerMdmPort = None, 
+        mdmMode = None, #Single or Cluster
+        mdmClusterState = None, # NotClustered or ClusteredNormal or ClusteredDegraded or ClusteredTiebreakerDown or ClusteredDegradedTiebreakerDown
+        mdmManagementIpList = None, # List
+        mdmManagementPort = None, 
+        capacityAlertHighThresholdPercent = None,
+        capacityAlertCriticalThresholdPercent = None,
+        installId = None, 
+        swid = None, 
+        daysInstalled = None, 
+        maxCapacityInGb = None,
+        capacityTimeLeftInDays = None, 
+        enterpriseFeaturesEnabled = None, 
+        defaultIsVolumeObfuscated = None,
+        isInitialLicense = None, 
+        restrictedSdcModeEnabled = None,
+        remoteReadOnlyLimitState = None,
+        
+        
+        
+    ):
+        self.id=None
+        self.name=None
+        self.system_version_name = systemVersionName
+        self.primary_mdm_actor_ip_list = []
+        for ip in primaryMdmActorIpList:
+            self.primary_mdm_actor_ip_list.append(ip)
+        #primaryMdmActorIpList
+        
+        self.primary_mdm_actor_port = primaryMdmActorPort
+        self.secondary_mdm_actor_ip_list = secondaryMdmActorIpList
+        self.secondary_mdm_actor_port = secondaryMdmActorPort 
+        self.tiebreaker_mdm_ip_list = tiebreakerMdmIpList
+        self.tiebreaker_mdm_port = tiebreakerMdmPort 
+        self.mdm_mode = mdmMode
+        self.mdm_cluster_state = mdmClusterState
+        self.mdm_management_ip_list = mdmManagementIpList
+        self.mdm_management_port = mdmManagementPort 
+        self.capacity_alert_high_threshold_percent = capacityAlertHighThresholdPercent
+        self.capacity_alert_critical_threshold_percent = capacityAlertCriticalThresholdPercent
+        self.install_id = installId
+        self.swid = swid 
+        self.days_installed = daysInstalled 
+        self.max_caapcity_in_gb = maxCapacityInGb
+        self.capacity_time_left_in_days = capacityTimeLeftInDays 
+        self.enterprise_features_enabled = enterpriseFeaturesEnabled
+        self.default_is_volume_obfuscated = defaultIsVolumeObfuscated
+        self.is_initial_license = isInitialLicense
+        self.restricted_sdc_mode_enabled = restrictedSdcModeEnabled
+        self.remote_readonly_limit_state = remoteReadOnlyLimitState
+
+
+    @staticmethod
+    def from_dict(dict):
+        """
+        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
+        JSON response from the server.
+        """
+        return ScaleIO_System(**dict)
+
+
 
 class ScaleIO_Protection_Domain(SIO_Generic_Object):
     def __init__(self,
@@ -442,9 +513,10 @@ class ScaleIO(SIO_Generic_Object):
         raise KeyError("Volume with that NAME not found")
         
     def create_volume_by_pd_name(self, volName, volSizeInMb, pdObj, thinProvision=True, **kwargs):
+        # TODO:
+        # Check if object parameters are the correct ones, otherwise throw error
         self._check_login()
-        if kwargs:
-            print "Map created volume to SDC(s)"
+            
         if thinProvision:
             volType = 'ThinProvisioned'
         else:
@@ -452,15 +524,40 @@ class ScaleIO(SIO_Generic_Object):
         volumeDict = {'protectionDomainId': pdObj.id, 'volumeSizeInKb': str(volSizeInMb * 1024),  'name': volName, 'volumeType': volType}
         pprint(volumeDict)
         response = self._do_post("{}/{}".format(self._api_url, "types/Volume/instances"), json=volumeDict)
+
+        if kwargs:
+            print "Map created volume to SDC(s)"
+            for key, value in kwargs:
+                if key == 'mapAll':
+                    if value == True:
+                        self.map_volume_to_sdc(self.get_volume_by_name(volName), mapAll=True)
+                if key == 'mapToSdc':
+                    if value:
+                        for innerKey, innerValue in kwargs:
+                            if innerKey == 'mapAll':
+                                    if innerValue == True:
+                                        self.map_volume_to_sdc(self.get_volume_y_name(volName), mapAll=True)
+                                    else:
+                                        self.map_volume_to_sdc(self.get_volume_by_name(volName), value)
         return response
- 
-    def map_volume_to_sdc(self, volumeObj, sdcObj, allowMultipleMappings=False):
-        self._check_login()        
-        mapVolumeToSdcDict = {'sdcId': sdcObj.id, 'allowMultipleMappings': str(allowMultipleMappings).upper()}
+
+    def map_volume_to_sdc(self, volumeObj, sdcObj=None, allowMultipleMappings=False, **kwargs):
+        # TODO:
+        # Check if object parameters are the correct ones, otherwise throw error
+        self._check_login()
+        if kwargs:
+            for key, value in kwargs:
+                if key == 'mapAll':
+                    if value == True:
+                        mapVolumeToSdcDict = {'allSdcs': 'True'}
+        else:
+            mapVolumeToSdcDict = {'sdcId': sdcObj.id, 'allowMultipleMappings': str(allowMultipleMappings).upper()}
         response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volumeObj.id, 'action/addMappedSdc'), json=mapVolumeToSdcDict)
         return response
     
     def unmap_volume_from_sdc(self, volObj, sdcObj):
+        # TODO:
+        # Check if object parameters are the correct ones, otherwise throw error
         self._check_login() 
         unmapVolumeFromSdcDict = {'sdcId': sdcObj.id}
         response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volObj.id, 'action/removeMappedSdc'), json=unmapVolumeFromSdcDict)    
@@ -471,11 +568,28 @@ class ScaleIO(SIO_Generic_Object):
         removeMode = 'ONLY_ME' | 'INCLUDING_DESCENDANTS' | 'DESCENDANTS_ONLY' | 'WHOLE_VTREE'
         Using kwargs it will be possible to tell delete_volume() to unmap all SDCs before delting. Not working yet
         """
-        self._check_login() 
+        # TODO:
+        # Check if object parameters are the correct ones, otherwise throw error
+        self._check_login()
         deleteVolumeDict = {'removeMode': removeMode}
         response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Volume::", volObj.id, 'action/removeVolume'), json=deleteVolumeDict)    
         return response
-    
+ 
+    def delete_sdc_from_cluster(self, sdcObj):
+        # TODO:
+        # Check if object parameters are the correct ones, otherwise throw error
+        self._check_login() 
+        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Sdc::", sdcObj.id, 'action/removeSdc'))    
+        return response  
+
+    def set_sdc_name(self, name, sdcObj):
+        # TODO:
+        # Check if object parameters are the correct ones, otherwise throw error
+        self._check_login()
+        deleteVolumeDict = {'sdcName': name}
+        response = self._do_post("{}/{}{}/{}".format(self._api_url, "instances/Sdc::", sdcObj.id, 'action/setSdcName'), json=unmapVolumeFromSdcDict)    
+        return response  
+
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s: %(levelname)s %(module)s:%(funcName)s | %(message)s', level=logging.WARNING)
     sio = ScaleIO("https://192.168.100.42/api","admin","Password1!",verify_ssl=False) # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST

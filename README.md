@@ -1,4 +1,4 @@
-# PythonScale
+# ScaleIO SDK in Python
 
 #### A module for interacting with the EMC ScaleIO 1.3+ REST API.
 
@@ -9,36 +9,72 @@ Requirements:
 * Python 2.6+
 * [Requests](http://docs.python-requests.org/en/latest/)
 * [Requests-Toolbelt](https://github.com/sigmavirus24/requests-toolbelt)
-* ScaleIO 1.3 or 1.31 installtion with REST API Gateway configured (note, the [Vagrantfile](https://github.com/virtualswede/vagrant-scaleio) from @virtualswede works fine for development)
+* ScaleIO 1.3 or 1.31 installation with REST API Gateway configured (note, the [Vagrantfile](https://github.com/virtualswede/vagrant-scaleio) from @virtualswede works fine for development)
 
-Examples of use:
 
+## Code examples
+
+### Connect to ScaleIO API
 ```
 from scaleio import ScaleIO
-sio = ScaleIO("http://192.168.50.12/api","admin","Scaleio123",verify_ssl=False)
+sio = ScaleIO("https://192.168.50.12/api","admin","Scaleio123",verify_ssl=False)
+```
 
+### Get a list of all attributes attached to each SDC know by your ScaleIO cluster
+```
 #print all the known SDCs:
 pprint(sio.sdc)
+```
 
+### Get list of attributes attached to all SDS
+```
 #print all the known SDSs:
 pprint(sio.sds)
+```
 
+### Get list of attributes attached to all known Volumes
+```
 #print all the known Volumes:
 pprint(sio.volumes)
+```
 
+### Get list of attributes attached to each protection domain
+```
 #print all the known Protection Domains:
 pprint(sio.protection_domains)
+```
 
+### Create a new Volume in Proctection Domain
+```
 #Create a new Volume
 sio.create_volume_by_pd_name('testvol001', 8192, sio.get_pd_by_name('default'))
 
-#Map Volume to SDC (get_sdc_by_ip('ipaddr') can be used also to map against an SDC)
+#Create Volume and Map to single SDC in one operation
+sio.create_volume_by_pd_name('testvol001', 8192, sio.get_pd_by_name('default'), mapToSdc=sio.get_sdc_by_id('ce4d7e2a00000001'))
+
+#Create Volume and Map to all SDC in one operation
+sio.create_volume_by_pd_name('testvol001', 8192, sio.get_pd_by_name('default'), mapAll=True)
+
+```
+
+### Map existing Volume to a SDC by its ID
+```
+# method get_sdc_by_ip('ipaddr') if you want to map an Vol to SDC using its IP address
 sio.map_volume_to_sdc(sio.get_volume_by_name('testvol'), sio.get_sdc_by_id('ce4d7e2a00000001'), False)
 
+# Map Volume to all SDCs
+sio.map_volume_to_sdc(sio.get_volume_by_name('testvol'), mapAll=True)
+```
+
+### Unmap volume from SDC
+```
 #Unmap Volume from SDC
 sio.unmap_volume_from_sdc(sio.get_volume_by_name('testvol'), sio.get_sdc_by_id('ce4d7e2a00000001'))
+```
 
+### Delete a Volume from ScaleIO cluster
+```
 #Delete Volume
 sio.delete_volume(sio.get_volume_by_name('testvol'), 'ONLY_ME')
-
+```
 
