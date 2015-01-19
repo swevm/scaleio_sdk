@@ -28,7 +28,7 @@ Initial code to test integration against ScaleIO API
 * Map to SDC(s) at the same time of creating a volume
 * Auto unmap of SDC when deleting volume that have existing mappings
 * Error checking (basics)
-* Make naming of methods and attributes consistent
+* Make naming of methods and attributes consistent (match to ScaleIO API documentation)
 * Statistics gathering (maybe in 0.3+)
 * Move classes (at least the bigger ones) into own files
 * Add a changelog
