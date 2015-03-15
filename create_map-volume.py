@@ -1,7 +1,7 @@
 from scaleio import *
 
 logging.basicConfig(format='%(asctime)s: %(levelname)s %(module)s:%(funcName)s | %(message)s', level=logging.WARNING)
-sio = ScaleIO("https://192.168.100.42/api","admin","Password1!",verify_ssl=False) # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
+sio = ScaleIO("https://192.168.102.12/api","admin","Scaleio123",verify_ssl=False) # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
     
 sio.create_volume_by_pd_name('testvol201', 8192, sio.get_pd_by_name('default'), mapAll=True)
 

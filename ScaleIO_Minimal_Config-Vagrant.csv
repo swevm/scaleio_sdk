@@ -1,0 +1,4 @@
+IPs,Password,Operating System,Is MDM/TB,Is SDS,SDS Device List,Is SDC
+192.168.102.12,vagrant,linux,Primary,Yes,/home/vagrant/scaleio1,Yes
+192.168.102.13,vagrant,linux,Secondary,Yes,/home/vagrant/scaleio1,Yes
+192.168.102.11,vagrant,linux,TB,Yes,/home/vagrant/scaleio1,Yes

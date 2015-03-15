@@ -6,9 +6,10 @@ from distutils.core import setup
 setup(
     author=u'Matt Cowger & Magnus Nilson',
     author_email='matt@cowger.us',
-    name='PythonScale',
+    author_email='magnus@karabas.nu',
+    name='ScaleIO SDK',
     description='Python interface to ScaleIO 1.3 REST API',
-    version="0.1",
+    version="0.3",
     url='https://github.com/swevm/scaleio_sdk/',
     license='Apache License',
     packages=find_packages(),
