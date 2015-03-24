@@ -7,6 +7,7 @@ from requests.packages.urllib3.poolmanager import PoolManager
 import ssl
 import logging
 import time
+import sys
 
 from pprint import pprint
 
@@ -853,12 +854,14 @@ class ScaleIO(SIO_Generic_Object):
 
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s: %(levelname)s %(module)s:%(funcName)s | %(message)s', level=logging.WARNING)
-    sio = ScaleIO("https://192.168.102.12/api","admin","Scaleio123",verify_ssl=False) # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
-    pprint(sio.system)
-    pprint(sio.sdc)
-    pprint(sio.sds)
-    pprint(sio.volumes)
-    pprint(sio.protection_domains)
-    pprint(sio.storage_pools)
-    #sio.im_login()
+    if len(sys.argv) == 1:
+        print "Usage: scaleio.py mdm_ip user pass"
+    else:
+        sio = ScaleIO("https://" + sys.argv[1] + "/api",sys.argv[2],sys.argv[3],verify_ssl=False) # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
+        pprint(sio.system)
+        pprint(sio.sdc)
+        pprint(sio.sds)
+        pprint(sio.volumes)
+        pprint(sio.protection_domains)
+        pprint(sio.storage_pools)
     

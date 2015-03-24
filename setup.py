@@ -4,9 +4,8 @@ from setuptools import find_packages
 from distutils.core import setup
 
 setup(
-    author=u'Matt Cowger & Magnus Nilson',
-    author_email='matt@cowger.us',
-    author_email='magnus@karabas.nu',
+    author='Matt Cowger & Magnus Nilson',
+    author_email='magnus@karabas.nu,matt@cowger.us',
     name='ScaleIO SDK',
     description='Python interface to ScaleIO 1.3 REST API',
     version="0.3",

@@ -9,36 +9,36 @@ Requirements:
 * Python 2.6+
 * [Requests](http://docs.python-requests.org/en/latest/)
 * [Requests-Toolbelt](https://github.com/sigmavirus24/requests-toolbelt)
-* ScaleIO 1.3 or 1.31 installation with REST API Gateway configured (note, the [Vagrantfile](https://github.com/virtualswede/vagrant-scaleio) from @virtualswede works fine for development)
+* ScaleIO 1.3 or 1.31 installation with REST API Gateway configured (note, the [Vagrantfile](https://github.com/virtualswede/vagrant-scaleio) from @virtualswede works fine to deploy ScaleIO with for development and testing)
 
 
 ## Code examples
 
 ### Connect to ScaleIO API
 ```
-from scaleio import ScaleIO
-sio = ScaleIO("https://192.168.50.12/api","admin","Scaleio123",verify_ssl=False)
+import scaleio
+sio = scaleio.ScaleIO("https://192.168.50.12/api","admin","Scaleio123",verify_ssl=False)
 ```
 
-### Get a list of all attributes attached to each SDC know by your ScaleIO cluster
+### Get a list of all attributes related to each SDC known by your ScaleIO cluster
 ```
 #print all the known SDCs:
 pprint(sio.sdc)
 ```
 
-### Get list of attributes attached to all SDS
+### Get list of attributes related to all SDS
 ```
 #print all the known SDSs:
 pprint(sio.sds)
 ```
 
-### Get list of attributes attached to all known Volumes
+### Get list of attributes related to all known Volumes
 ```
 #print all the known Volumes:
 pprint(sio.volumes)
 ```
 
-### Get list of attributes attached to each protection domain
+### Get list of attributes related to each protection domain
 ```
 #print all the known Protection Domains:
 pprint(sio.protection_domains)

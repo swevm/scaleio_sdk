@@ -16,29 +16,30 @@ Initial code to test integration against ScaleIO API
 * Changed structure of package to follow community guidelines
 * Removed old examples because of rewrite of module and some of them not working (like create volumes)
 
-## v0.2 (only in master branch, bot tagged)
+## v0.2 (only in master branch, never tagged as branch)
 * Create volume
 * Delete Volume
 * Map Volume to SDC
 * Unmap volume from SDC
 * Additions to Volume and SDC Class
 
-
 ## v0.3 (will get its own branch)
 * Map to SDC(s) at the same time of creating a volume
 * Auto unmap of SDC when deleting volume that have existing mappings
-* Error checking (basics)
-* Make naming of methods and attributes consistent (match to ScaleIO API documentation)
+* Error checking (basics) - Might be pushed to v0.3+
+* Make naming of methods and attributes consistent (match to ScaleIO API documentation) - Might be pushed to v0.3+
 * Statistics gathering (maybe in 0.3+)
-* Move classes (at least the bigger ones) into own files
 * Add a changelog
-* Register/Unregister SDC in cluster
-
+* IM integration to install new cluster
+* Add examples
 
 ## v0.3+
 * Unit Testing
 * Add SDS
 * Remove SDS
 * IM integration to automate upgrade of cluster software
-* IM integration to install new cluster
+* IM integration to allow expansion of cluster with new nodes (SDS, SDCs
+* Register/Unregister SDC in cluster
+* Statistics gathering
+* Move classes (at least the bigger ones) into own files
 

@@ -37,10 +37,10 @@ class Im_Generic_Object(object):
     
     def to_JSON(self):
         return json.dumps(self, default=lambda o: o.__dict__)
-    
+
     def to_DICT(self):
         return self.__dict__
-
+    
 class ScaleIO_Node_Object(Im_Generic_Object):
     """
     Do not use. Will be the common denominator for ScaleIO configuration nodes.
@@ -119,7 +119,11 @@ class Mdm_Object(Im_Generic_Object):
                 self.managementIPs.append(mgmtIP)
         self.node=ScaleIO_Node_Object.from_dict(node)
         self.nodeInfo=nodeInfo
-        
+        self.mdmIPs = []
+        if mdmIPs:
+            for mdmIP in mdmIPs:
+                self.mdmIPs.append(mdmIP)
+                
     @staticmethod
     def from_dict(dict):
         """
@@ -190,7 +194,7 @@ class Sds_Device_Object(Im_Generic_Object):
         self.devicePath=devicePath
         self.storagePool=storagePool
         self.deviceName=deviceName
-        
+    
     @staticmethod
     def from_dict(dict):
         """
@@ -220,7 +224,7 @@ class Sds_Object(Im_Generic_Object):
         self.node=ScaleIO_Node_Object.from_dict(node)
         self.nodeInfo=nodeInfo
         self.sdsName=sdsName
-        self.protectionDomain=protectionDomain
+        self.protectionDomain = protectionDomain
         self.faultSet=faultSet
         self.allIPs=[]
         for allIp in allIPs:
@@ -236,13 +240,16 @@ class Sds_Object(Im_Generic_Object):
         self.devices=[]
         if devices:
             for device in devices:
-                self.devices.append(Sds_Device_Object(device))
+                self.devices.append(Sds_Device_Object.from_dict(device))
         self.optimized=optimized
         self.port=port
     
-    def addDevice(devObject):
-        pass
-    
+    def addDevice(self, devicePath, storagePool, deviceName):
+        #print "Add Device:"
+        device_dict = {'devicePath': devicePath, 'storagePool': storagePool, 'deviceName': deviceName}
+        #pprint (device_dict) #(Sds_Device_Object(devicePath, storagePool, deviceName).to_JSON())
+        self.devices.append(Sds_Device_Object.from_dict(device_dict))
+        
     def removeDevice(devObject):
         pass
     
@@ -371,7 +378,7 @@ class ScaleIO_System_Object(Im_Generic_Object):
         self.mdmPassword = value
     
     def addSds(self, sdsObj):
-        pass
+        self.sdsList.append(sdsObj)
     
     def removeSds(self, sdsObj):
         pass
@@ -382,17 +389,17 @@ class ScaleIO_System_Object(Im_Generic_Object):
     def removeSdc(self, sdcObj):
         pass
     
-    def addCallHomeConfiguration(self):
-        pass
+    def addCallHomeConfiguration(self, callhomeConfObj):
+        self.callHomeConfiguration = callhomeConfObj.to_JSON()
     
     def removeCallHomeConfiguration(self):
-        pass
+        self.callHomeConfiguration = None
     
-    def addSyslogConfiguration(self):
-        pass
+    def addSyslogConfiguration(self, syslogConfObj):
+        self.remoteSyslogConfiguration = callhomeConfObj.to_JSON()
     
     def removeSyslogConfiguration(self):
-        pass
+        self.remoteSyslogConfiguration = None
     
     def addPrimaryMdm(self, mdmObj):
         pass
@@ -417,167 +424,4 @@ class ScaleIO_System_Object(Im_Generic_Object):
 
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s: %(levelname)s %(module)s:%(funcName)s | %(message)s', level=logging.WARNING)
-    
-    # Purpose of this program is to validate how to write a ScaleIO IM Topology parser than output JSON, IM can use to expand and/or upgrade a cluster
-    # Input: Known working JSON that IM accept as install base
-    # Output: JSON that look the same are Input JSON but expanded with additional nodes/components. Input to this should be based on JSON retrieved by topology in IM
-    
-    default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.102.12","192.168.102.13"],"mdmPassword":"Scaleio123","liaPassword":"Scaleio123","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.12"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.13"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.102.11"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.11]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.11"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.12]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.12"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.13]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.13"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
-    sio_cluster_obj = ScaleIO_System_Object.from_dict(json.loads(default_minimal_cluster_config))
-
-    #pprint (sio_cluster_obj)
-
-    #pprint (sio_cluster_obj.to_JSON())
-    
-    
-    
-    print ""
-    print ""
-    print ""
-    print ""
-    print ""
-    
-    
-    
-    # Flow:
-    # Create Nodes
-    # Create basic info. mdmPass, liaPass and some others
-    # Construct MDM and TB and basic info
-    # Create list of SDS
-    # Create list of SDC
-    
-    # Construct nodes
-    nodeUsername = 'root'
-    nodePassword = 'vagrant'
-    node1 = ScaleIO_Node_Object(None, None, ['192.168.102.11'], None, 'linux', nodePassword, nodeUsername)
-    node2 = ScaleIO_Node_Object(None, None, ['192.168.102.12'], None, 'linux', nodePassword, nodeUsername)
-    node3 = ScaleIO_Node_Object(None, None, ['192.168.102.13'], None, 'linux', nodePassword, nodeUsername)
-    print "Node Object:"
-    pprint (node1.to_JSON())
-    pprint (node2.to_JSON())
-    pprint (node2.to_JSON())
-    print ""
-    
-    # Construct basic info
-    mdmIPs = ['192.168.102.12','192.168.102.13']
-    sdcList = []
-    sdsList = []
-    mdmPassword = 'Scaleio123'
-    liaPassword = 'Scaleio123'
-    licenseKey = None
-    installationId = None
- 
-    # Create MDMs and TB
-    primaryMdm = Mdm_Object(json.loads(node1.to_JSON()), None, None) #['192.168.102.11']) #WHY ISNT ManagementIPs pupulated????
-    secondaryMdm = Mdm_Object(json.loads(node1.to_JSON()), None, None) #['192.168.102.11'])
-    tb = Tb_Object(json.loads(node1.to_JSON()), None, ['192.168.102.11'])
-    callHomeConfiguration = {'callHomeConfiguration':'None'}
-    remoteSyslogConfiguration = {'remoteSysogConfiguration':'None'}
-    
-    #Create SDS objects
-    """
-    SDS Object
-    def __init__(self,
-        node=None,
-        nodeInfo=None,
-        sdsName=None,
-        protectionDomain=None,
-        faultSet=None,
-        allIPs=None,
-        sdsOnlyIPs=None,
-        sdcOnlyIPs=None,
-        devices=None,
-        optimized=None,
-        port=None
-    ):
-    """
-    
-    
-    """
-    SDS Device Object:
- 
-     # Create SDS objects
-    
-    def __init__(self,
-        devicePath=None,
-        storagePool=None,
-        deviceName=None
-    ):
-    """  
-    
-    
-    sds1 = Sds_Object
-    
-    
-    
-    # Create SDC objects
-    """
-    node=None,
-    nodeInfo=None,
-    splitterRpaIp=None
-    """
-    sdc1 = Sdc_Object(json.loads(node1.to_JSON()), None, None)
-    sdc2 = Sdc_Object(json.loads(node2.to_JSON()), None, None)
-    sdc3 = Sdc_Object(json.loads(node3.to_JSON()), None, None)
-    
-    #print sdc1.to_DICT
-    #print sdc1.to_JSON()[1:-1]
-    #print""
-    sdcList.append(json.loads(sdc1.to_JSON()))
-    sdcList.append(json.loads(sdc2.to_JSON()))
-    sdcList.append(json.loads(sdc3.to_JSON()))
-    
-    
-    sdcList1 = []
-    sdcList1.append(sdc1)
-    sdcList1.append(sdc2)
-    sdcList1.append(sdc2)
-    #pprint (sdcList1).__dict__
-    
-
- 
-    
-    
-    
-    
-    
-    
-    # Assemble a complete ScaleIO custer configuration
-    
-    sioobj = ScaleIO_System_Object(installationId,
-                                   mdmIPs,
-                                   mdmPassword,
-                                   liaPassword,
-                                   licenseKey,
-                                   json.loads(primaryMdm.to_JSON()),
-                                   json.loads(secondaryMdm.to_JSON()),
-                                   json.loads(tb.to_JSON()),
-                                   sdsList,
-                                   sdcList,
-                                   callHomeConfiguration,
-                                   remoteSyslogConfiguration
-                                   )
-
-    # Export sioobj to JSON (should upload clean in IM??????)
-    
-    pprint (sioobj.to_JSON())
-    
-    """
-    ScaleIO_System_Object(
-        installationId=None,
-        mdmIPs=None,
-        mdmPassword=None,
-        liaPassword=None,
-        licenseKey=None,
-        primaryMdm=None,
-        secondaryMdm=None,
-        tb=None,
-        sdsList=None,
-        sdcList=None,
-        callHomeConfiguration=None,
-        remoteSyslogConfiguration=None 
-    )
-    """
-    
-    
-    
+    print "Cannot run this code by direct call to script"

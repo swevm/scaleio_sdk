@@ -12,6 +12,9 @@ import time
 from os import listdir
 from os.path import isfile, join
 import logging
+from scaleioobject import *
+from installerfsm import *
+
 
 from pprint import pprint
 
@@ -26,7 +29,7 @@ class TLS1Adapter(HTTPAdapter):
                                        block=block,
                                        ssl_version=ssl.PROTOCOL_TLSv1)
 
-class Im_Generic_Object(object):
+class Im_Generic_Object1(object):
     @classmethod
     def get_class_name(cls):
         """
@@ -44,372 +47,14 @@ class Im_Generic_Object(object):
 
     def __repr__(self):
         return self.__str__()
-    
+
     def to_JSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-            sort_keys=True, indent=4)
-    
-class Im_Command_Status(Im_Generic_Object):
-    """
-    Request:
-    
-    Parameters:
-    
-    Response:
-    {"192.168.100.42":[{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.42"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"validateClean":false,"validateExactVersion":false,"commandState":"completed","startTime":"2015-01-25T14:19:45.722Z","message":"Command completed successfully","result":{"diskDevices":[{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-0"},{"diskName":"sr0"},{"diskName":"fd0"},{"diskName":"sdb"},{"diskName":"sda"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:46.012Z"},"allowedState":"query","archived":false,"commandName":".ValidateNodeCommand"}],"MDM Commands":[{"mdmIPs":[],"mdmPassword":"","configuration":{"installationId":"4777d14d7609d6e4","mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","liaPassword":"Password1!","licenseKey":null,"primaryMdm":{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.41"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"scinia"},{"diskName":"sr0"},{"diskName":"sda2"},{"diskName":"fd0"},{"diskName":"sda"},{"diskName":"dm-0"},{"diskName":"sda1"},{"diskName":"sdb"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.973Z"},"managementIPs":["192.168.100.42","192.168.100.41"],"mdmIPs":["192.168.100.41"]},"secondaryMdm":{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.42"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-0"},{"diskName":"sr0"},{"diskName":"fd0"},{"diskName":"sdb"},{"diskName":"sda"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:46.012Z"},"managementIPs":["192.168.100.42","192.168.100.41"],"mdmIPs":["192.168.100.42"]},"tb":{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.43"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"sr0"},{"diskName":"sda"},{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-1"},{"diskName":"dm-0"},{"diskName":"sdb"},{"diskName":"fd0"},{"diskName":"scinia"}],"installedComponents":[{"ecsComponentType":"tb","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.898Z"},"tbIPs":["192.168.100.43"]},"sdsList":[{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.41"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"scinia"},{"diskName":"sr0"},{"diskName":"sda2"},{"diskName":"fd0"},{"diskName":"sda"},{"diskName":"dm-0"},{"diskName":"sda1"},{"diskName":"sdb"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.973Z"},"sdsName":"SDS_[192.168.100.41]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.100.41"],"sdsOnlyIPs":[],"sdcOnlyIPs":[],"devices":[],"optimized":false,"port":7072},{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.43"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"sr0"},{"diskName":"sda"},{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-1"},{"diskName":"dm-0"},{"diskName":"sdb"},{"diskName":"fd0"},{"diskName":"scinia"}],"installedComponents":[{"ecsComponentType":"tb","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.898Z"},"sdsName":"SDS_[192.168.100.43]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.100.43"],"sdsOnlyIPs":[],"sdcOnlyIPs":[],"devices":[],"optimized":false,"port":7072},{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.42"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-0"},{"diskName":"sr0"},{"diskName":"fd0"},{"diskName":"sdb"},{"diskName":"sda"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:46.012Z"},"sdsName":"SDS_[192.168.100.42]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.100.42"],"sdsOnlyIPs":[],"sdcOnlyIPs":[],"devices":[],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.42"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-0"},{"diskName":"sr0"},{"diskName":"fd0"},{"diskName":"sdb"},{"diskName":"sda"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:46.012Z"},"splitterRpaIp":null},{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.43"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"sr0"},{"diskName":"sda"},{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-1"},{"diskName":"dm-0"},{"diskName":"sdb"},{"diskName":"fd0"},{"diskName":"scinia"}],"installedComponents":[{"ecsComponentType":"tb","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.898Z"},"splitterRpaIp":null},{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.41"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"nodeInfo":{"diskDevices":[{"diskName":"scinia"},{"diskName":"sr0"},{"diskName":"sda2"},{"diskName":"fd0"},{"diskName":"sda"},{"diskName":"dm-0"},{"diskName":"sda1"},{"diskName":"sdb"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.973Z"},"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null},"noUpload":false,"noInstall":false,"noLia":false,"allowReboot":false,"liaOnly":false,"commandState":"completed","startTime":"2015-01-25T14:19:46.134Z","message":"Command completed successfully","result":null,"allowedState":"query","archived":false,"commandName":".ValidateAndOrchestrateNewCommandsForUpgradeCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNormalClusterModeCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".SwitchMdmOwnershipCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".SwitchMdmOwnershipCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNormalClusterModeCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"},{"mdmIPs":["192.168.100.42","192.168.100.41"],"mdmPassword":"Password1!","commandState":"pending","startTime":null,"message":null,"result":null,"allowedState":"install","archived":false,"commandName":".WaitForNoDegradedCommand"}],"192.168.100.43":[{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.43"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"validateClean":false,"validateExactVersion":false,"commandState":"completed","startTime":"2015-01-25T14:19:45.722Z","message":"Command completed successfully","result":{"diskDevices":[{"diskName":"sr0"},{"diskName":"sda"},{"diskName":"sda2"},{"diskName":"sda1"},{"diskName":"dm-1"},{"diskName":"dm-0"},{"diskName":"sdb"},{"diskName":"fd0"},{"diskName":"scinia"}],"installedComponents":[{"ecsComponentType":"tb","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.898Z"},"allowedState":"query","archived":false,"commandName":".ValidateNodeCommand"}],"192.168.100.41":[{"node":{"ostype":"unknown","nodeName":null,"nodeIPs":["192.168.100.41"],"domain":null,"userName":null,"password":null,"liaPassword":"Password1!"},"validateClean":false,"validateExactVersion":false,"commandState":"completed","startTime":"2015-01-25T14:19:45.723Z","message":"Command completed successfully","result":{"diskDevices":[{"diskName":"scinia"},{"diskName":"sr0"},{"diskName":"sda2"},{"diskName":"fd0"},{"diskName":"sda"},{"diskName":"dm-0"},{"diskName":"sda1"},{"diskName":"sdb"},{"diskName":"dm-1"}],"installedComponents":[{"ecsComponentType":"callhome","version":{"version":"1.31-256.2"}},{"ecsComponentType":"lia","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sdc","version":{"version":"1.31-256.2"}},{"ecsComponentType":"sds","version":{"version":"1.31-256.2"}},{"ecsComponentType":"mdm","version":{"version":"1.31-256.2"}}],"osType":"linux","linuxFlavour":"rhel7","timestamp":"2015-01-25T14:19:45.973Z"},"allowedState":"query","archived":false,"commandName":".ValidateNodeCommand"}]}
-    """
-    
-    def __init__(self,
-        id=None,
-        links=None,
-        name=None
-    ):
-        self.id=id
-        self.links = []
-        if links:
-            for link in links:
-                self.links.append(Link(link['href'], link['rel']))
-        self.name=name
+        return json.dumps(self, default=lambda o: o.__dict__)
 
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Im_Command_Status(**dict)
-
-class ScaleIO_Node_Object(Im_Generic_Object):
-    """
-    Do not use. Will be the common denominator for ScaleIO configuration nodes.
-    All config object should inherit this base
-    """
+    def to_DICT(self):
+        return self.__dict__
     
-    def __init__(self,
-        domain=None,
-        liaPassword=None,
-        nodeIPs=None,
-        nodeName=None,
-        ostype=None,
-        password=None,
-        userName=None
-    ):
-        self.domain=domain
-        self.liaPassword=liaPassword
-        self.nodeIPs=[]
-        if nodeIPs:
-            for nodeIp in nodeIPs:
-                self.nodeIPs.append(nodeIp)
-        self.nodeName=nodeName
-        self.ostype=ostype
-        self.password=password
-        self.userName=userName
-    
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return ScaleIO_Node_Object(**dict)
-
-class Primary_Mdm_Object(Im_Generic_Object):
-    """
-    Python object representation of a primary MDM.
-    """
-    
-    def __init__(self,
-        managementIPs=None,
-        mdmIPs=None,
-        node=None,
-        nodeInfo=None
-    ):
-        # Data retrieved is a JSON representation of a primary MDM with 'node' as its root
-        self.managementIPs=[]
-        if managementIPs:
-            for mgmtIP in managementIPs:
-                self.managementIPs.append(mgmtIP)
-        self.node=ScaleIO_Node_Object.from_dict(node)
-        self.nodeInfo=nodeInfo
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Primary_Mdm_Object(**dict)
-
-class Mdm_Object(Im_Generic_Object):
-    """
-    Python object representation of a MDM (primary or secondary look eactly the same configuration wise).
-    """
-    
-    def __init__(self,
-        managementIPs=None,
-        mdmIPs=None,
-        node=None,
-        nodeInfo=None
-    ):
-        self.managementIPs=[]
-        if managementIPs:
-            for mgmtIP in managementIPs:
-                self.managementIPs.append(mgmtIP)
-        self.node=ScaleIO_Node_Object.from_dict(node)
-        self.nodeInfo=nodeInfo
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        #print "*** Class Mdm_Object, from_dict(**dict) method:"
-        #pprint (dict)
-        return Mdm_Object(**dict)
-
-class Tb_Object(Im_Generic_Object):
-    """
-    Python object representation of a TB.
-    """
-    
-    def __init__(self,
-        node=None,
-        nodeInfo=None,
-        tbIPs=None
-    ):
-        self.node=ScaleIO_Node_Object.from_dict(node)
-        self.nodeInfo=nodeInfo
-        self.tbIPs=[]
-        if tbIPs:
-            for tbIp in tbIPs:
-                self.tbIPs.append(tbIp)
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        #print "*** Class Tb_Object, from_dict(**dict) method:"
-        #pprint (dict)
-        return Tb_Object(**dict)
-
-class Sdc_Object(Im_Generic_Object):
-    """
-    Python object representation of a MDM (primary or secondary look eactly the same configuration wise).
-    """
-    
-    def __init__(self,
-        node=None,
-        nodeInfo=None,
-        splitterRpaIp=None
-    ):
-        self.node=ScaleIO_Node_Object.from_dict(node)
-        self.nodeInfo=nodeInfo
-        self.splitterRpaIp=splitterRpaIp
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Sdc_Object(**dict)
-
-class Sds_Device_Object(Im_Generic_Object):
-    """
-    Python object representation of a MDM (primary or secondary look eactly the same configuration wise).
-    """
-    
-    def __init__(self,
-        devicePath=None,
-        storagePool=None,
-        deviceName=None
-    ):
-        self.devicePath=devicePath
-        self.storagePool=storagePool
-        self.deviceName=deviceName
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Sds_Device_Object(**dict)
-
-class Sds_Object(Im_Generic_Object):
-    """
-    Python object representation of a MDM (primary or secondary look eactly the same configuration wise).
-    """
-    
-    def __init__(self,
-        node=None,
-        nodeInfo=None,
-        sdsName=None,
-        protectionDomain=None,
-        faultSet=None,
-        allIPs=None,
-        sdsOnlyIPs=None,
-        sdcOnlyIPs=None,
-        devices=None,
-        optimized=None,
-        port=None
-    ):
-        self.node=ScaleIO_Node_Object.from_dict(node)
-        self.nodeInfo=nodeInfo
-        self.sdsName=sdsName
-        self.protectionDomain=protectionDomain
-        self.faultSet=faultSet
-        self.allIPs=[]
-        for allIp in allIPs:
-            self.allIPs.append(allIp)
-        self.sdsOnlyIPs=[]
-        if sdsOnlyIPs:
-            for sdsOnlyIp in sdsOnlyIPs:
-                self.sdsOnlyIPs.append(sdsOnlyIp)
-        self.sdcOnlyIPs=[]
-        if sdcOnlyIPs:
-            for sdcOnlyIp in sdcOnlyIPs:
-                self.sdcOnlyIPs.append(sdcOnlyIp)
-        self.devices=[]
-        if devices:
-            for device in devices:
-                self.devices.append(Sds_Device_Object(device))
-        self.optimized=optimized
-        self.port=port
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Sds_Object(**dict)
-
-class Call_Home_Configuration_Object(Im_Generic_Object):
-    """
-    Python object representation of a MDM (primary or secondary look eactly the same configuration wise).
-    """
-    
-    def __init__(self,
-        emailFrom=None,
-        mdmUsername=None,
-        mdmPassword=None,
-        customerName=None,
-        host=None,
-        port=None,
-        tls=None,
-        smtpUsername=None,
-        smtpPassword=None,
-        alertEmailTo=None,
-        severity=None
-    ):
-        self.emailFrom=emailFrom
-        self.mdmUsername=mdmUsername
-        self.mdmPassword=mdmPassword
-        self.customerName=customerName
-        self.host=host
-        self.port=port
-        self.tls=tls
-        self.smtpUsername=smtpUsername
-        self.smtpPassword=smtpPassword
-        self.alertEmailTo=alertEmailTo
-        self.severity=severity
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Call_Home_Configuration_Object(**dict)
-
-class Remote_Syslog_Configuration_Object(Im_Generic_Object):
-    """
-    Python object representation of a MDM (primary or secondary look eactly the same configuration wise).
-    """
-    
-    def __init__(self,
-        ip=None,
-        port=None,
-        facility=None
-    ):
-        self.ip=ip
-        self.port=port
-        self.facility=facility
-        
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        return Remote_Syslog_Configuration_Object(**dict)
-
-class ScaleIO_System_Object(Im_Generic_Object):
-    """
-    Root configuration object
-    """
-    
-    def __init__(self,
-        installationId=None,
-        mdmIPs=None,
-        mdmPassword=None,
-        liaPassword=None,
-        licenseKey=None,
-        primaryMdm=None,
-        secondaryMdm=None,
-        tb=None,
-        sdsList=None,
-        sdcList=None,
-        callHomeConfiguration=None,
-        remoteSyslogConfiguration=None
-        
-    ):
-        self.installationId=installationId
-        self.mdmIPs = []
-        for mdmIP in mdmIPs:
-            self.mdmIPs.append(mdmIP)
-        self.mdmPassword=mdmPassword
-        self.liaPassword=liaPassword
-        self.licenseKey=licenseKey
-        self.primaryMdm=Mdm_Object.from_dict(primaryMdm)
-        self.secondaryMdm=Mdm_Object.from_dict(secondaryMdm)
-        self.tb=Tb_Object.from_dict(tb)
-        self.sdsList=[]
-        for sds in sdsList:
-            self.sdsList.append(Sds_Object.from_dict(sds))
-        self.sdcList=[]
-        for sdc in sdcList:
-            self.sdcList.append(Sdc_Object.from_dict(sdc))
-        if callHomeConfiguration != None:
-            self.callHomeConfiguration=Call_Home_Configuration_Object.from_dict(callHomeConfiguration)
-        else:
-            self.callHomeConfiguration = None
-        if remoteSyslogConfiguration != None:
-            self.remoteSyslogConfiguration=Remote_Syslog_Configuration_Object.from_dict(remoteSyslogConfiguration)
-        else:
-            self.remoteSyslogConfiguration = None
-            
-    def setLiaPassword(self, value):
-        self.liaPassword = value
-        
-    def setMdmPassword(self, value):
-        self.mdmPassword = value
-    
-    
-    @staticmethod
-    def from_dict(dict):
-        """
-        A convinience method that directly creates a new instance from a passed dictionary (that probably came from a
-        JSON response from the server.
-        """
-        #print "*** Class ScaleIO_System_Object - .from_dict(**dict)"
-        #pprint (dict)
-        return ScaleIO_System_Object(**dict)
-    
+ 
 
 class Im(Im_Generic_Object):
     """
@@ -578,12 +223,14 @@ class Im(Im_Generic_Object):
         print resp.text
 
     def get_state(self, count=None):
-        print "/types/State/instances/"
+        #print "/types/State/instances/"
         payload = {'_':'1425822717883'}
         referer = 'https://192.168.100.12/install.jsp'
-        resp = self._im_session.get("{}/{}".format(self._im_api_url, 'types/State/instances/'), params = payload)
-        print "URL: " + resp.url
-        print resp.text
+        #resp = self._im_session.get("{}/{}".format(self._im_api_url, 'types/State/instances/'), params = payload)
+        resp = self._im_session.get("{}/{}".format(self._im_api_url, 'types/State/instances/'))
+        #print "URL: " + resp.url
+        #print resp.text
+        return resp.text
     
     def set_state(self, state):
         # state can be: query, upload, install, configure
@@ -689,13 +336,15 @@ class Im(Im_Generic_Object):
         jresp = json.loads(resp.text)
         pprint(jresp.text)
 
-    def get_command(self, count=None):
-        print "/types/Command/instances"
-        payload = {'_':'1425822717883'}
-        resp = self._im_session.get("{}/{}".format(self._im_api_url, 'types/Command/instances/'), params = payload)
+    def get_command_state(self, count=None):
+        #print "/types/Command/instances"
+        #payload = {'_':'1425822717883'} # What do this mean?
+        #resp = self._im_session.get("{}/{}".format(self._im_api_url, 'types/Command/instances/'), params = payload)
+        resp = self._im_session.get("{}/{}".format(self._im_api_url, 'types/Command/instances'))
         #resp = self._im_session.get('https://192.168.100.42/types/Command/instances').json()
-        print "URL: " + resp.url
-        pprint (resp.text)
+        #print "URL: " + resp.url
+        #pprint (resp.text)
+        return resp.text
         
     def get_nodeinfo_instances(self):
         print "/types/NodeInfo/instances/actions/downloadGetInfo"
@@ -787,10 +436,16 @@ class Im(Im_Generic_Object):
         self._cluster_config_cached.setLiaPassword(liaPassword)
         pprint (self._cluster_config_cached.to_JSON())
 
-        # NOT TO BE USED - Fix JSON dump to IM accepted format. COMPARE WHAT THIS CLASS DUMP TO WHAT THE INSTALLER CREATE IN BELOW JSON STRING
+        # SDS configured to use /home/scaleio1
         #default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.102.12","192.168.102.13"],"mdmPassword":"Scaleio123","liaPassword":"Scaleio123","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.12"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.13"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.102.11"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.11]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.11"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.12]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.12"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.13]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.13"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
-        default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.102.12","192.168.102.13"],"mdmPassword":"Scaleio123","liaPassword":"Scaleio123","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.12"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.13"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.102.11"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.11]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.11"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/dev/sdc","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.12]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.12"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/dev/sdc","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.13]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.13"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/dev/sdc","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
+        
+        # Generated with scelio_object.py - Progammatically generated JSON using a set of classes that represent different ScaleIO components
+        default_minimal_cluster_config = '{"licenseKey": null, "mdmPassword": "Scaleio123", "mdmIPs": ["192.168.102.12", "192.168.102.13"], "sdsList": [{"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.11", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.11"]}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.12", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.12"]}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.13", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.13"]}], "liaPassword": "Scaleio123", "primaryMdm": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "managementIPs": [], "mdmIPs": ["192.168.102.12"]}, "callHomeConfiguration": null, "installationId": null, "secondaryMdm": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "managementIPs": [], "mdmIPs": ["192.168.102.13"]}, "sdcList": [{"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}], "tb": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "tbIPs": ["192.168.102.11"]}, "remoteSyslogConfiguration": null}'        
+        #
         #default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.100.51","192.168.100.52"],"mdmPassword":"Password1!","liaPassword":"Password1!","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.51"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.100.51"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.52"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.100.52"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.53"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.100.53"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.51"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.100.51]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.100.51"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/dev/sdb","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.52"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.100.52]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.100.52"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/dev/sdb","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.53"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.100.53]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.100.53"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/dev/sdb","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.51"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.52"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.100.53"],"domain":null,"userName":"root","password":"password","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
+        
+        print "JSON DUMP OF INSTALL CONFIG:"
+        pprint (json.loads(default_minimal_cluster_config))
         
         r1 = self._im_session.post(
             "{}/{}".format(self._im_api_url,"types/Installation/instances/"),
@@ -816,15 +471,154 @@ class Im(Im_Generic_Object):
         self._cluster_config_cached.sdsList.append(sdsobject)
         self._cache_contains_uncommitted = True
                 
-    def create_minimal_scaleio_cluster(self, setMdmPassword, setLiaPassword):
+    def create_minimal_scaleio_cluster(self, mdmPassword, liaPassword):
         """
         Using IM this method create a 3-node ScaleIO cluster with 2xMDM, 1xTB, 3x SDS (using /dev/sdb), 3x SDC
+        """
         """
         self.read_cluster_config_from_disk("minimal-cluster.json")
         #self._cluster_config_cached.setMdmPassword(setMdmPassword)
         #self._cluster_config_cached.setLiaPassword(setLiaPassword)
         self.push_cached_cluster_configuration(setMdmPassword, setLiaPassword)
+        """
+        
+        ###########################
+        # Create a ScaleIO System #
+        ###########################
+        # Flow:
+        # Create Nodes
+        # Create basic info. mdmPass, liaPass and some others
+        # Construct MDM and TB and basic info
+        # Create list of SDS
+        # Create list of SDC
+        
+        
+        ###################
+        # Construct nodes #
+        ###################
+        nodeUsername = 'root'
+        nodePassword = 'vagrant'
+        node1 = ScaleIO_Node_Object(None, None, ['192.168.102.11'], None, 'linux', nodePassword, nodeUsername)
+        node2 = ScaleIO_Node_Object(None, None, ['192.168.102.12'], None, 'linux', nodePassword, nodeUsername)
+        node3 = ScaleIO_Node_Object(None, None, ['192.168.102.13'], None, 'linux', nodePassword, nodeUsername)
+        print "Node Object:"
+        pprint (node1.to_JSON())
+        pprint (node2.to_JSON())
+        pprint (node2.to_JSON())
+        print ""
+            
+        ##########################################
+        # Construct basic info for System_Object #
+        ##########################################
+        mdmIPs = ['192.168.102.12','192.168.102.13']
+        sdcList = []
+        sdsList = []
+        #mdmPassword = 'Scaleio123'
+        #liaPassword = 'Scaleio123'
+        licenseKey = None
+        installationId = None
+     
+        ########################################
+        # Create MDMs and TB for System_Object #
+        ########################################
+        primaryMdm = Mdm_Object(json.loads(node2.to_JSON()), None, None, node2.nodeIPs) # WHY ISNT ManagementIPs pupulated???? Its not in a working config either. mdmIPs need to be populated though
+        secondaryMdm = Mdm_Object(json.loads(node3.to_JSON()), None, None, node3.nodeIPs)
+        tb = Tb_Object(json.loads(node1.to_JSON()), None, node1.nodeIPs)
+        callHomeConfiguration = None # {'callHomeConfiguration':'None'}
+        remoteSyslogConfiguration = None # {'remoteSysogConfiguration':'None'}
+        
+        ################################################################
+        #Create SDS objects - To be added to SDS list in System_Object #
+        ################################################################
+        sds1 = Sds_Object(json.loads(node1.to_JSON()), None, 'SDS_' + str(node1.nodeIPs[0]), 'default', None, node1.nodeIPs, None, None, None, False, '7072')
+        sds1.addDevice("/home/vagrant/scaleio1", None, None)
+        sds2 = Sds_Object(json.loads(node2.to_JSON()), None, 'SDS_' + str(node2.nodeIPs[0]), 'default', None, node2.nodeIPs, None, None, None, False, '7072')
+        sds2.addDevice("/home/vagrant/scaleio1", None, None)
+        sds3 = Sds_Object(json.loads(node3.to_JSON()), None, 'SDS_' + str(node3.nodeIPs[0]), 'default', None, node3.nodeIPs, None, None, None, False, '7072')
+        sds3.addDevice("/home/vagrant/scaleio1", None, None)
+        sdsList.append(json.loads(sds1.to_JSON()))
+        sdsList.append(json.loads(sds2.to_JSON()))
+        sdsList.append(json.loads(sds3.to_JSON()))
+        print "sdsList:"
+        pprint (sdsList)
     
+        #############################################################
+        # Create SDC objects - To be added as list to System_Object #
+        #############################################################
+        """
+        node=None,
+        nodeInfo=None,
+        splitterRpaIp=None
+        """
+        sdc1 = Sdc_Object(json.loads(node1.to_JSON()), None, None)
+        sdc2 = Sdc_Object(json.loads(node2.to_JSON()), None, None)
+        sdc3 = Sdc_Object(json.loads(node3.to_JSON()), None, None)
+        
+        sdcList.append(json.loads(sdc1.to_JSON()))
+        sdcList.append(json.loads(sdc2.to_JSON()))
+        sdcList.append(json.loads(sdc3.to_JSON()))
+        
+        ######################################################
+        # Construct a complete ScaleIO cluster configuration #
+        ######################################################
+        sioobj = ScaleIO_System_Object(installationId,
+                                       mdmIPs,
+                                       mdmPassword,
+                                       liaPassword,
+                                       licenseKey,
+                                       json.loads(primaryMdm.to_JSON()),
+                                       json.loads(secondaryMdm.to_JSON()),
+                                       json.loads(tb.to_JSON()),
+                                       sdsList,
+                                       sdcList,
+                                       callHomeConfiguration,
+                                       remoteSyslogConfiguration
+                                       )
+    
+        # Export sioobj to JSON (should upload clean in IM)
+        
+
+        ###########################################################################
+        # Push System_Object JSON - To be used by IM to install ScaleIO on nodes #
+        ###########################################################################
+        #pprint (sioobj.to_JSON())
+        self.push_cluster_configuration(sioobj.to_JSON())
+        
+    def push_cluster_configuration(self, scaleioobj, noUpload = False, noInstall= False, noConfigure = False):
+        """
+        Method push cached ScaleIO cluster configuration to IM (reconfigurations that have been made to cached configuration are committed using IM)
+        Method: POST
+        https://192.168.100.51/types/Installation/instances/?noUpload=false&noInstall=false&noConfigure=false
+        Attach JSON cluster configuration as request payload (data). Add MDM and LIA passwords)
+        """
+
+        # Generated with scelio_object.py - Progammatically generated JSON using a set of classes that represent different ScaleIO components
+        #default_minimal_cluster_config = '{"licenseKey": null, "mdmPassword": "Scaleio123", "mdmIPs": ["192.168.102.12", "192.168.102.13"], "sdsList": [{"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.11", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.11"]}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.12", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.12"]}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.13", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.13"]}], "liaPassword": "Scaleio123", "primaryMdm": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "managementIPs": [], "mdmIPs": ["192.168.102.12"]}, "callHomeConfiguration": null, "installationId": null, "secondaryMdm": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "managementIPs": [], "mdmIPs": ["192.168.102.13"]}, "sdcList": [{"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}], "tb": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "tbIPs": ["192.168.102.11"]}, "remoteSyslogConfiguration": null}'        
+
+        print "JSON DUMP OF CLUSTER CONFIG:"
+        pprint (json.loads(scaleioobj))
+        config_params = {'noUpload': noUpload, 'noInstall': noInstall, 'noConfigure':noConfigure}
+
+        r1 = self._im_session.post(
+            "{}/{}".format(self._im_api_url,"types/Installation/instances/"),
+            headers={'Content-type':'application/json','Version':'1.0'},
+            params = config_params, 
+            verify=self._im_verify_ssl,
+            #json=json.loads(self._cluster_config_cached.to_JSON()),
+            json = json.loads(scaleioobj),
+            stream=True
+        )
+        if not r1.ok:
+            # Something went wrong
+            print "Error push_cluster_configuration()"
+        
+        print "Response after push_cluster_configuration()"
+        
+        # RESPONSE NEED TO BE WRAPPED IN tey/catch. Cannot assume JSON is returned.
+        print r1.text
+        #pprint (json.loads(r1.text))
+        return r1.text
+   
     # Add API client methods here that interact with IM API
     @property
     def system(self): # Change to something that is usable. A Class for Generate CSV for example.
@@ -885,12 +679,13 @@ class Im(Im_Generic_Object):
         resp = temp_im_session.post(
         #resp = self._do_post(
             "{}/{}".format(temp_im_api_url,"types/InstallationPackage/instances/uploadPackage"),
-            auth=HTTPBasicAuth('admin', 'Password1!'),
+            auth=HTTPBasicAuth(temp_username, temp_password),
             #headers = m.content_type,
             files = file_dict,
             verify = False,
             data = parameters
             )
+        print "resp.text = " + resp.text
                 
     def deleteFileFromIM(self, filename):
         pass
@@ -959,319 +754,6 @@ class Im(Im_Generic_Object):
     def getInstallerUrl(self):
         pass
 
-##======================================================
-#       ScaleIO IM Installation process State Machine
-##======================================================
-
-##===============================================
-## TRANSITIONS
-
-class Transition(object):
-	# Code executed when transitioning from one state to another
-	def __init__(self, toState):
-		self.toState = toState
-		
-	def Execute(self):
-		print ("Transitioning...")
-		print ""
-
-
-##===============================================
-## STATES
-
-class State(object):
-	# The base template state which all others will inherit from
-	def __init__(self, FSM, im_inst):
-		self.FSM = FSM
-		self.timer = 0
-		self.startTime = 0
-		im_instance = im_inst
-		# Possible states: IDLE, PENDING, FAILED, COMPLETED
-		#print self.FSM.getCurrentStateStatus()
-		
-	def Enter(self):
-		self.FSM.setCurrentStateStatus('PENDING')
-		pass
-	
-	def Execute (self):
-		pass
-	
-	def status (self):
-		pass
-	
-	def Next(self):
-		pass
-	
-	def Exit(self):
-		pass
-
-class Query(State):
-	# Worker class - Takes care of managing IM QUERY phase and do status control of each phase
-	def __init__(self, FSM, im_inst):
-		super(Query, self).__init__(FSM, im_inst)
-		self.calling_object = im_inst
-		
-	def Enter(self):
-		print ("Entering QUERY phase")
-		super(Query, self).Enter()
-
-	def Execute (self):
-		print ("Start ScaleIO IM Query phase")
-		self.FSM.imapi.set_state('query')
-		time.sleep(15)
-
-		self.Next()
-		if self.FSM.autoTransition:
-			self.FSM.Execute()
-
-	def Next(self):
-		print ("Advance to next step")
-		self.FSM.ToTransition("toUPLOAD") # Move to next step
-		
-	def Exit(self):
-		print ("Exiting QUERY phase.")
-
-class Upload(State):
-	# Worker class - Takes care of managing IM QUERY phase and do status control of each phase
-	def __init__(self, FSM, im_inst):
-		super(Upload, self).__init__(FSM, im_inst)
-		
-	def Enter(self):
-		print ("Entering UPLOAD phase")
-		super(Upload, self).Enter()
-
-	def Execute (self):
-		print ("Upload of binaries to nodes")
-		# Call set_state
-		self.FSM.imapi.set_state('upload') # Set IM to UPLOAD state
-		time.sleep(60)
-		
-		self.Next()
-		if self.FSM.autoTransition:
-			self.FSM.Execute()
-	
-	def Next(self):
-		print ("Advance to next step")
-		self.FSM.ToTransition("toINSTALL") # Move to next step
-		
-	def Exit(self):
-		print ("Exiting UPLOAD phase.")
-
-
-class Install(State):
-	# Worker class - Takes care of managing IM QUERY phase and do status control of each phase
-	def __init__(self, FSM, im_inst):
-		super(Install, self).__init__(FSM, im_inst)
-		
-	def Enter(self):
-		print ("Entering install phase")
-		super(Install, self).Enter()
-
-	def Execute (self):
-		print ("Installing ScaleIO binaries")
-		# Call set_state
-		self.FSM.imapi.set_state('install') # Set IM to QUERY state
-		time.sleep(60)
-		
-		self.Next()
-		if self.FSM.autoTransition:
-			self.FSM.Execute()
-			
-	def Next(self):
-		print ("Advance to next step")
-		self.FSM.ToTransition("toCONFIGURE") # Move to next step
-		
-	def Exit(self):
-		print ("Exiting INSTALL phase.")
-
-
-class Configure(State):
-	# Worker class - Takes care of managing IM QUERY phase and do status control of each phase
-	def __init__(self, FSM, im_inst):
-		super(Configure, self).__init__(FSM, im_inst)
-		
-	def Enter(self):
-		print ("Entering configure phae")
-		super(Configure, self).Enter()
-
-	def Execute (self):
-		print ("Configure ScaleIO cluster")
-		# Call set_state
-		self.FSM.imapi.set_state('configure') # Set IM to QUERY state
-		time.sleep(60)
-		
-		self.Next()
-		if self.FSM.autoTransition:
-			self.FSM.Execute()
-		
-	def Next(self):
-		print ("Advance to next step")
-		self.FSM.ToTransition("toARCHIVE") # Move to next step
-		
-	def Exit(self):
-		print ("Exiting CONFIGURE phase.")
-
-class Archive(State):
-	# Worker class - Takes care of managing IM QUERY phase and do status control of each phase
-	def __init__(self, FSM, im_inst):
-		super(Archive, self).__init__(FSM, im_inst)
-		
-	def Enter(self):
-		print ("Entering archive phase")
-		super(Archive, self).Enter()
-
-	def Execute (self):
-		print ("Completing ScaleIO cluster install")
-		#print ("Execute self.set_archive_all()")
-		self.FSM.imapi.set_archive_all()
-		time.sleep(10)
-		
-		self.Next()
-		if self.FSM.autoTransition:
-			self.FSM.Execute()
-		
-	def Next(self):
-		print ("Advance to next step")
-		self.FSM.ToTransition("toCOMPLETE") # Move to next step
-		
-	def Exit(self):
-		print ("Exiting ARCHIVE phase.")
-
-class Complete(State):
-	# Worker class - Takes care of managing IM QUERY phase and do status control of each phase
-	def __init__(self, FSM, im_inst):
-		super(Complete, self).__init__(FSM, im_inst)
-		
-	def Enter(self):
-		print ("Entering COMPLETE phase")
-		super(Complete, self).Enter()
-
-	def Execute (self):
-		print ("Installation complete!")
-		self.FSM.setCurrentStateStatus('COMPLETED')
-		print self.FSM.getCurrentStateStatus()
-		self.FSM.imapi.get_state()
-		
-	def Next(self):
-		self.FSM.setCurrentStateStatus('COMPLETED')
-
-	def Exit(self):
-		print ("Exiting COMPLETE phase.")
-
-##===============================================
-## FINITE STATE MACHINE
-
-class FSM(object):
-	# Holds the states and transitions available, 
-	# executes current states main functions and transitions
-	def __init__(self, imapi):
-		self.states = {}
-		self.transitions = {}
-		self.curState = None
-		self.prevState = None ## USE TO PREVENT LOOPING 2 STATES FOREVER
-		self.trans = None
-		self.autoTransition = False
-		self.completed = False
-		self.curStateStatus = 'IDLE'
-		self.imapi = imapi
-
-	def AddTransition(self, transName, transition):
-		self.transitions[transName] = transition
-		
-	def enableAutoTransition(self):
-		self.autoTransition = True
-	
-	def disableAutoTransition(self):
-		self.autoTransition = False
-
-	def AddState(self, stateName, state):
-		self.states[stateName] = state
-
-	def SetState(self, stateName):
-		self.prevState = self.curState
-		self.curState = self.states[stateName]
-	
-	def getState(self):
-		return curState
-	
-	def setCurrentStateStatus(self, status):
-		print "*** Setting currentStateStatus to " + status + " ***" 
-		self.curStateStatus = status
-		if status == 'COMPLETED':
-			self.trans = None
-		#	self.curState = None
-		print "setCurrentStateStatus() = " + self.curStateStatus
-	
-	def getCurrentStateStatus(self):
-		return self.curStateStatus
-		# Return IDLE, FAILED, PENDING, COMPLETE
-		
-	def ToTransition(self, toTrans):
-		self.trans = self.transitions[toTrans]
-
-	def Next(self):
-		if self.curStateStatus == 'IDLE' or self.curStateStatus == 'PENDING':
-			self.curState.Next()
-			if self.autoTransition:
-				self.Execute()
-		else:
-			self.trans = None
-			print " Status is COMPLETE - Next() will not do anything"
-			
-	def Execute(self):
-		print "FSM Execute() - curStateStatus = " + self.curStateStatus
-		if self.curStateStatus == 'IDLE' or self.curStateStatus == 'PENDING':
-			self.setCurrentStateStatus('PENDING')
-			if (self.trans):
-				self.curState.Exit()
-				self.trans.Execute()
-				self.SetState(self.trans.toState)
-				self.curState.Enter()
-				self.trans = None
-			self.curState.Execute()
-		else:
-			print "Status is COMPLETE"
-			self.trans = None
-##===============================================
-## IMPLEMENTATION
-
-Char = type("Char", (object,), {})
-
-class InstallerFSM:
-	# Base character which will be holding the Finite State Machine,
-	# which in turn will hold the states and transitions.
-	def __init__(self, imapi, automatic=False):
-		self.FSM = FSM(imapi)
-		if automatic:
-			self.FSM.enableAutoTransition()
-			
-		## STATES
-		self.FSM.AddState("QUERY", Query(self.FSM, imapi))
-		self.FSM.AddState("UPLOAD", Upload(self.FSM, imapi))
-		self.FSM.AddState("INSTALL", Install(self.FSM, imapi))
-		self.FSM.AddState("CONFIGURE", Configure(self.FSM, imapi))
-		self.FSM.AddState("ARCHIVE", Archive(self.FSM, imapi))
-		self.FSM.AddState("COMPLETE", Complete(self.FSM, imapi))
-
-		## TRANSITIONS
-		self.FSM.AddTransition("toQUERY", Transition("QUERY"))
-		self.FSM.AddTransition("toUPLOAD", Transition("UPLOAD"))
-		self.FSM.AddTransition("toINSTALL", Transition("INSTALL"))
-		self.FSM.AddTransition("toCONFIGURE", Transition("CONFIGURE"))
-		self.FSM.AddTransition("toARCHIVE", Transition("ARCHIVE"))
-		self.FSM.AddTransition("toCOMPLETE", Transition("COMPLETE"))
-		
-		self.FSM.SetState("QUERY") # When executing FSM first time always start at QUERY phase
-	
-	def Next(self):
-		self.FSM.Next()
-	
-	def getCurrentStateStatus(self):
-		return self.FSM.getCurrentStateStatus()
-		
-	def Execute(self):
-		self.FSM.Execute()
-
 
 ##===============================================
 ## IM Integration Implmentation  
@@ -1284,77 +766,47 @@ if __name__ == "__main__":
     # Change Class initialization below to Im("https://localhost:4443, "", "") if running over SSH tunnel - As above running remotely against lab
     #imconn = Im("https://192.168.100.51","admin","Password1!",verify_ssl=False) # "Password1!") # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
 
+    #######################
+    # LOGIN TO SCALEIO IM #
+    #######################
     imconn = Im("https://192.168.102.12","admin","Scaleio123",verify_ssl=False) # "Password1!") # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
-
-    imconn._login() # WORKS!
-
+    imconn._login()
     #imconn.get_installation_packages_latest() # Always return all uploaded packages. Seem versioning does not work. At least not in ScaleIO 1.31.256 (IM)
     
-    #imconn.uploadCsvConfiguration('/Users/swevm/Downloads/RHEL6_260/51_config.csv') # WORKS??? - Dont think it worksm 20150205
-    
-    ### UPLOAD RPM PACKAGES TO BE DEPLOYED BY IM ###
-    #imconn.uploadPackages('/Users/swevm/Downloads/RHEL6_1277/') # WORKS!
-    #imconn.get_installation_packages_latest() # WORKS with issues. Only return all packages not latest. Seem to be a bug in IM
-    im_installer = InstallerFSM(imconn, True)
-    
+    """
     print "***  State  ***"
     print imconn.get_state()
-    print "*** Command State ***"
-    print imconn.get_command()
     print "*** Version ***"
     print imconn.get_version()
     print ""
     print ""
+    """
     
+    ######## NEED TO BE VERIFIED IF IT WORKS ###########
     #Get ScaleiIO cluster configuration from IM - Populate class cache
     #imconn.populate_scaleio_cluster_configuration_cache("192.168.102.12", "Scaleio123", "Scaleio123") # Populate confiugration cache
     #imconn.cache_config_to_disk() # Create persistent copy of cluster configuration in JSON format
+    ####################################################
+
+    ### UPLOAD RPM PACKAGES TO BE DEPLOYED BY IM ###
+    imconn.uploadPackages('/Users/swevm/Downloads/RHEL6_1277/') # WORKS!
 
     ####################
     # INSTALLER STAGES #
     ####################
     
-    #1
-    #imconn.read_cluster_config_from_disk() # Read cluster confiuguration from disk and populate configuration cache.
+    # Initialize Instaler State Machine
+    im_installer = InstallerFSM(imconn, True)
     
-    ### Only create_minimal_scaleio_cluster() works atm
-    #imconn.push_cached_cluster_configuration(imconn.get_cached_cluster_configuration_json(), 'Password1!', 'Password1!') # NEED TESTING - Send configuration to IM to start installation
+    time.sleep(10)
     
-    ### RERUN IM INSTALL PROCESS - EXTRACT JSON CONFIG TO FIND OUT WHERE DEVICE(S) TO BE USED BY SDS NODES ARE CONFIGURED TO ALLOW CREATING A BASIC MINIMUM 3 NODE CLUSTER WITH VAGRANT
-    print "Create minimal cluster - with static JSON"
-    imconn.create_minimal_scaleio_cluster("Password1!", "Password1!")
-
-
-    #print "*** Set QUERY state ***"
-    #2
-    #imconn.set_state('query')
-    #2
-    #imconn.set_state('upload')    
-    #3
-    #imconn.set_state('install')
-    #4
-    #imconn.set_state('configure')
-    #5
-    #imconn.set_state('query') # - SEEM NOT TO BE NEEDED TO CALL IN ORDER TO MARK INSTALL PROCESS AS COMPLETE
-    #6
-    #imconn.set_abort_pending('null') # - SEEM NOT TO BE NEEDED TO CALL IN ORDER TO MARK INSTALL PROCESS AS COMPLETE Not sure why this is part of the Finish process during installation - Is this also used to abort failed stages????
-    #7
-    #imconn.set_archive_all() # THIS MARK INSTALL PROCESS FINSHED AND COMPLETED
-    
+    ### RUN IM INSTALL PROCESS - EXTRACT JSON CONFIG TO FIND OUT WHERE DEVICE(S) TO BE USED BY SDS NODES ARE CONFIGURED TO ALLOW CREATING A BASIC MINIMUM 3 NODE CLUSTER WITH VAGRANT
+    print "Create minimal cluster as Python objects"
+    imconn.create_minimal_scaleio_cluster("Scaleio123", "Scaleio123")    
     print "Start Install process!!!"
     im_installer.Execute() # Start install process
     
     print "***  State  ***"
-    print imconn.get_state()
-    print "*** Command State ***"
-    print imconn.get_command()
-    
-    #print "***  State  ***"
-    #print imconn.get_state()
-        
+    print imconn.get_state()        
     print ""
     print ""
-    #print "***** get_cached_cluster_configuration_json() *****"
-    #print imconn._cluster_config_cached.to_JSON() # Works. to_JSON implemented as a method for all classes that inherit from ScaleIO base class   
-    
-   
