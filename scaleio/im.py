@@ -58,7 +58,7 @@ class Im_Generic_Object1(object):
 
 class Im(Im_Generic_Object):
     """
-    The IM class provides a pythonic way to interact with and manage a ScaleIO cluster using Installation Manager API/
+    The IM class provides a pythonic way to interact with and manage a ScaleIO cluster using Installation Manager 'private' API/
     """
     def __init__(self, api_url, username, password, verify_ssl=False, LiaPassword=None):
         """
@@ -114,7 +114,7 @@ class Im(Im_Generic_Object):
         print "Login method()"
         #print r.text
         self._im_logged_in = True
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         
         """
         ADD CODE:
@@ -267,7 +267,7 @@ class Im(Im_Generic_Object):
         Method: POST
         """
         # NOT TO BE USED
-        default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.102.12","192.168.102.13"],"mdmPassword":"Scaleio123","liaPassword":"Scaleio123","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.12"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.13"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.102.11"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.11]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.11"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.12]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.12"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.13]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.13"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
+        #default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.102.12","192.168.102.13"],"mdmPassword":"Scaleio123","liaPassword":"Scaleio123","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.12"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.13"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.102.11"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.11]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.11"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.12]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.12"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.13]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.13"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
         r1 = self._im_session.post(
             "{}/{}".format(self._im_api_url,"types/Command/instances/actions/abortPending"),
             headers={'Content-type':'application/json','Version':'1.0'}, 
@@ -280,7 +280,7 @@ class Im(Im_Generic_Object):
             print "Error set_abort_pending()"
         
         print "Response after set_abort_pending()"
-        # RESPONSE NEED TO BE WRAPPED IN tey/catch. Can?t assume JSON is returned.
+        # RESPONSE NEED TO BE WRAPPED IN try/catch. Cannot assume JSON is returned.
         print r1.text
         #pprint (json.loads(r1.text))
         return r1.text
@@ -309,7 +309,7 @@ class Im(Im_Generic_Object):
 
     def get_version(self):
         print "/version/"
-        payload = {'_':'1425822717883'}
+        payload = {'_':'1425822717883'} # Investigate what this number mean when some IM API calls are done. Its used by IM Webui. Seem to be Unixtime format.
         referer = 'https://192.168.100.12/status.jsp'
         resp = self._im_session.get("{}/{}".format(self._im_api_url, 'version/'), params = payload)
         print "URL: " + resp.url
@@ -388,10 +388,10 @@ class Im(Im_Generic_Object):
     
     def retrieve_scaleio_cluster_configuration(self, mdmIP, mdmPassword, liaPassword=None):
         sysconf_json = self.get_cluster_topology(mdmIP, mdmPassword, liaPassword)
-        a = ScaleIO_System_Object.from_dict(json.loads(sysconf_json))
-        a.setMdmPassword(mdmPassword)
-        a.setLiaPassword(liaPassword)
-        self._cluster_config_cached = a
+        confObj = ScaleIO_System_Object.from_dict(json.loads(sysconf_json))
+        confObj.setMdmPassword(mdmPassword)
+        confObj.setLiaPassword(liaPassword)
+        self._cluster_config_cached = confObj
         self._cache_contains_uncommitted = False
 
     def populate_scaleio_cluster_configuration_cache(self, mdmIP, mdmPassword, liaPassword=None):
@@ -419,15 +419,13 @@ class Im(Im_Generic_Object):
                 #result = file.read()
                 confObj = ScaleIO_System_Object.from_dict(json.loads(file.read()))
                 file.close()
-        self._cluster_config_cached = confObj
+        self._cluster_config_cached = confObj # Read file contents into in-memory cluster configuration cache
         self._cache_contains_uncommitted = False
 
-    #def push_cached_cluster_configuration(self, jsonstring, mdmPassword, liaPassword, noUpload = False, noInstall= False, noConfigure = False):
     def push_cached_cluster_configuration(self, mdmPassword, liaPassword, noUpload = False, noInstall= False, noConfigure = False):
         """
         Method push cached ScaleIO cluster configuration to IM (reconfigurations that have been made to cached configuration are committed using IM)
         Method: POST
-        https://192.168.100.51/types/Installation/instances/?noUpload=false&noInstall=false&noConfigure=false
         Attach JSON cluster configuration as request payload (data). Add MDM and LIA passwords)
         """
         config_params = {'noUpload': noUpload, 'noInstall': noInstall, 'noConfigure':noConfigure}
@@ -436,6 +434,8 @@ class Im(Im_Generic_Object):
         self._cluster_config_cached.setLiaPassword(liaPassword)
         pprint (self._cluster_config_cached.to_JSON())
 
+
+        ####### FINISH METOD - CAN ONLY PUSH - USE CACHE
         # SDS configured to use /home/scaleio1
         #default_minimal_cluster_config = '{"installationId":null,"mdmIPs":["192.168.102.12","192.168.102.13"],"mdmPassword":"Scaleio123","liaPassword":"Scaleio123","licenseKey":null,"primaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.12"]},"secondaryMdm":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"managementIPs":null,"mdmIPs":["192.168.102.13"]},"tb":{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"tbIPs":["192.168.102.11"]},"sdsList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.11]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.11"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.12]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.12"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"sdsName":"SDS_[192.168.102.13]","protectionDomain":"default","faultSet":null,"allIPs":["192.168.102.13"],"sdsOnlyIPs":null,"sdcOnlyIPs":null,"devices":[{"devicePath":"/home/vagrant/scaleio1","storagePool":null,"deviceName":null}],"optimized":false,"port":7072}],"sdcList":[{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.11"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.12"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null},{"node":{"ostype":"linux","nodeName":null,"nodeIPs":["192.168.102.13"],"domain":null,"userName":"root","password":"vagrant","liaPassword":null},"nodeInfo":null,"splitterRpaIp":null}],"callHomeConfiguration":null,"remoteSyslogConfiguration":null}'
         
@@ -497,10 +497,13 @@ class Im(Im_Generic_Object):
         # Construct nodes #
         ###################
         nodeUsername = 'root'
-        nodePassword = 'vagrant'
-        node1 = ScaleIO_Node_Object(None, None, ['192.168.102.11'], None, 'linux', nodePassword, nodeUsername)
-        node2 = ScaleIO_Node_Object(None, None, ['192.168.102.12'], None, 'linux', nodePassword, nodeUsername)
-        node3 = ScaleIO_Node_Object(None, None, ['192.168.102.13'], None, 'linux', nodePassword, nodeUsername)
+        nodePassword = 'password'
+        #node1 = ScaleIO_Node_Object(None, None, ['192.168.102.11'], None, 'linux', nodePassword, nodeUsername)
+        #node2 = ScaleIO_Node_Object(None, None, ['192.168.102.12'], None, 'linux', nodePassword, nodeUsername)
+        #node3 = ScaleIO_Node_Object(None, None, ['192.168.102.13'], None, 'linux', nodePassword, nodeUsername)
+        node1 = ScaleIO_Node_Object(None, None, ['192.168.100.101'], None, 'linux', nodePassword, nodeUsername)
+        node2 = ScaleIO_Node_Object(None, None, ['192.168.100.102'], None, 'linux', nodePassword, nodeUsername)
+        node3 = ScaleIO_Node_Object(None, None, ['192.168.100.103'], None, 'linux', nodePassword, nodeUsername)
         print "Node Object:"
         pprint (node1.to_JSON())
         pprint (node2.to_JSON())
@@ -510,7 +513,7 @@ class Im(Im_Generic_Object):
         ##########################################
         # Construct basic info for System_Object #
         ##########################################
-        mdmIPs = ['192.168.102.12','192.168.102.13']
+        mdmIPs = ['192.168.100.101','192.168.100.102']
         sdcList = []
         sdsList = []
         #mdmPassword = 'Scaleio123'
@@ -531,11 +534,11 @@ class Im(Im_Generic_Object):
         #Create SDS objects - To be added to SDS list in System_Object #
         ################################################################
         sds1 = Sds_Object(json.loads(node1.to_JSON()), None, 'SDS_' + str(node1.nodeIPs[0]), 'default', None, node1.nodeIPs, None, None, None, False, '7072')
-        sds1.addDevice("/home/vagrant/scaleio1", None, None)
+        sds1.addDevice("/dev/sdb", None, None)
         sds2 = Sds_Object(json.loads(node2.to_JSON()), None, 'SDS_' + str(node2.nodeIPs[0]), 'default', None, node2.nodeIPs, None, None, None, False, '7072')
-        sds2.addDevice("/home/vagrant/scaleio1", None, None)
+        sds2.addDevice("/dev/sdb", None, None)
         sds3 = Sds_Object(json.loads(node3.to_JSON()), None, 'SDS_' + str(node3.nodeIPs[0]), 'default', None, node3.nodeIPs, None, None, None, False, '7072')
-        sds3.addDevice("/home/vagrant/scaleio1", None, None)
+        sds3.addDevice("/dev/sdb", None, None)
         sdsList.append(json.loads(sds1.to_JSON()))
         sdsList.append(json.loads(sds2.to_JSON()))
         sdsList.append(json.loads(sds3.to_JSON()))
@@ -582,21 +585,19 @@ class Im(Im_Generic_Object):
         # Push System_Object JSON - To be used by IM to install ScaleIO on nodes #
         ###########################################################################
         #pprint (sioobj.to_JSON())
-        self.push_cluster_configuration(sioobj.to_JSON())
+        self._cluster_config_cached = sioobj.to_JSON() # PUSH CONFIGURATION INTO CONFIGURATION CACHE
+        self._cache_contains_uncommitted= False # New config pushed into cache - Nothing oncommitted
+        self.push_cluster_configuration(self._cluster_config_cached) # sioobj.to_JSON())
         
     def push_cluster_configuration(self, scaleioobj, noUpload = False, noInstall= False, noConfigure = False):
         """
         Method push cached ScaleIO cluster configuration to IM (reconfigurations that have been made to cached configuration are committed using IM)
         Method: POST
-        https://192.168.100.51/types/Installation/instances/?noUpload=false&noInstall=false&noConfigure=false
         Attach JSON cluster configuration as request payload (data). Add MDM and LIA passwords)
         """
 
-        # Generated with scelio_object.py - Progammatically generated JSON using a set of classes that represent different ScaleIO components
-        #default_minimal_cluster_config = '{"licenseKey": null, "mdmPassword": "Scaleio123", "mdmIPs": ["192.168.102.12", "192.168.102.13"], "sdsList": [{"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.11", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.11"]}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.12", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.12"]}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "protectionDomain": "default", "nodeInfo": null, "sdsName": "SDS_192.168.102.13", "sdcOnlyIPs": [], "optimized": false, "devices": [{"devicePath": "/home/vagrant/scaleio1", "storagePool": null, "deviceName": null}], "faultSet": null, "port": "7072", "sdsOnlyIPs": [], "allIPs": ["192.168.102.13"]}], "liaPassword": "Scaleio123", "primaryMdm": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "managementIPs": [], "mdmIPs": ["192.168.102.12"]}, "callHomeConfiguration": null, "installationId": null, "secondaryMdm": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "managementIPs": [], "mdmIPs": ["192.168.102.13"]}, "sdcList": [{"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.12"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}, {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.13"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "splitterRpaIp": null}], "tb": {"node": {"userName": "root", "domain": null, "nodeName": null, "nodeIPs": ["192.168.102.11"], "liaPassword": null, "ostype": "linux", "password": "vagrant"}, "nodeInfo": null, "tbIPs": ["192.168.102.11"]}, "remoteSyslogConfiguration": null}'        
-
-        print "JSON DUMP OF CLUSTER CONFIG:"
-        pprint (json.loads(scaleioobj))
+        #print "JSON DUMP OF CLUSTER CONFIG:"
+        #pprint (json.loads(scaleioobj))
         config_params = {'noUpload': noUpload, 'noInstall': noInstall, 'noConfigure':noConfigure}
 
         r1 = self._im_session.post(
@@ -612,10 +613,10 @@ class Im(Im_Generic_Object):
             # Something went wrong
             print "Error push_cluster_configuration()"
         
-        print "Response after push_cluster_configuration()"
+        #print "Response after push_cluster_configuration()"
         
         # RESPONSE NEED TO BE WRAPPED IN tey/catch. Cannot assume JSON is returned.
-        print r1.text
+        #print r1.text
         #pprint (json.loads(r1.text))
         return r1.text
    
@@ -661,23 +662,14 @@ class Im(Im_Generic_Object):
         file_dict = {'files':(str(filename), open(directory + filename, 'rb'), 'application/x-rpm')}
         m = MultipartEncoder(fields=file_dict)
         
-        #c_type  = m.content_type + '; charset=UTF-8'
-        #upload_headers={'Referer':'https://192.168.100.42/packages.jsp'}
-        #self._im_session.headers.update("")
-        #self._im_session.mount('https:
-        
-        
         temp_username = self._username
         temp_password = self._password
         temp_im_api_url = self._im_api_url
         temp_im_session = requests.Session()
-        #self._im_session.headers.update({'Accept': 'application/json', 'Version': '1.0'}) # Accept only json
         temp_im_session.mount('https://', TLS1Adapter())
         temp_im_verify_ssl = self._im_verify_ssl
 
-
         resp = temp_im_session.post(
-        #resp = self._do_post(
             "{}/{}".format(temp_im_api_url,"types/InstallationPackage/instances/uploadPackage"),
             auth=HTTPBasicAuth(temp_username, temp_password),
             #headers = m.content_type,
@@ -685,7 +677,7 @@ class Im(Im_Generic_Object):
             verify = False,
             data = parameters
             )
-        print "resp.text = " + resp.text
+        #print "resp.text = " + resp.text
                 
     def deleteFileFromIM(self, filename):
         pass
@@ -693,6 +685,10 @@ class Im(Im_Generic_Object):
         Request URL:https://192.168.100.42/instances/InstallationPackage::EMC-ScaleIO-tb-1.31-260.3.el6.x86_64.rpm/
         Request Method:DELETE
         """
+        
+        ##### NEED TO BE IMPLEMENTED
+        # Get list of installed files.
+        # Reverse engineer how the process works using the IM Webui
     
     def uploadCsvConfiguration(self, conf_filename):
         """
@@ -760,53 +756,4 @@ class Im(Im_Generic_Object):
 
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s: %(levelname)s %(module)s:%(funcName)s | %(message)s', level=logging.WARNING)
-    
-    # If one want to attach to a ScaleIO lab environment remotely and have only SSH as access mechanism:
-    # Attach to SSH server with local port forward: ssh -L 4443:192.168.100.42:443 <host>
-    # Change Class initialization below to Im("https://localhost:4443, "", "") if running over SSH tunnel - As above running remotely against lab
-    #imconn = Im("https://192.168.100.51","admin","Password1!",verify_ssl=False) # "Password1!") # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
 
-    #######################
-    # LOGIN TO SCALEIO IM #
-    #######################
-    imconn = Im("https://192.168.102.12","admin","Scaleio123",verify_ssl=False) # "Password1!") # HTTPS must be used as there seem to be an issue with 302 responses in Requests when using POST
-    imconn._login()
-    #imconn.get_installation_packages_latest() # Always return all uploaded packages. Seem versioning does not work. At least not in ScaleIO 1.31.256 (IM)
-    
-    """
-    print "***  State  ***"
-    print imconn.get_state()
-    print "*** Version ***"
-    print imconn.get_version()
-    print ""
-    print ""
-    """
-    
-    ######## NEED TO BE VERIFIED IF IT WORKS ###########
-    #Get ScaleiIO cluster configuration from IM - Populate class cache
-    #imconn.populate_scaleio_cluster_configuration_cache("192.168.102.12", "Scaleio123", "Scaleio123") # Populate confiugration cache
-    #imconn.cache_config_to_disk() # Create persistent copy of cluster configuration in JSON format
-    ####################################################
-
-    ### UPLOAD RPM PACKAGES TO BE DEPLOYED BY IM ###
-    imconn.uploadPackages('/Users/swevm/Downloads/RHEL6_1277/') # WORKS!
-
-    ####################
-    # INSTALLER STAGES #
-    ####################
-    
-    # Initialize Instaler State Machine
-    im_installer = InstallerFSM(imconn, True)
-    
-    time.sleep(10)
-    
-    ### RUN IM INSTALL PROCESS - EXTRACT JSON CONFIG TO FIND OUT WHERE DEVICE(S) TO BE USED BY SDS NODES ARE CONFIGURED TO ALLOW CREATING A BASIC MINIMUM 3 NODE CLUSTER WITH VAGRANT
-    print "Create minimal cluster as Python objects"
-    imconn.create_minimal_scaleio_cluster("Scaleio123", "Scaleio123")    
-    print "Start Install process!!!"
-    im_installer.Execute() # Start install process
-    
-    print "***  State  ***"
-    print imconn.get_state()        
-    print ""
-    print ""

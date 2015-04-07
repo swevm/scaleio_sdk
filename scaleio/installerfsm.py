@@ -142,6 +142,7 @@ class Install(State):
 			print "*** FAILED ***"
 		else:
 			print "*** COMPLETED ***"
+			time.sleep(6)
 			self.Next()
 		
 		if self.FSM.autoTransition:

@@ -11,6 +11,9 @@ Requirements:
 * [Requests-Toolbelt](https://github.com/sigmavirus24/requests-toolbelt)
 * ScaleIO 1.3 or 1.31 installation with REST API Gateway configured (note, the [Vagrantfile](https://github.com/virtualswede/vagrant-scaleio) from @virtualswede works fine to deploy ScaleIO with for development and testing)
 
+## Important information
+This module is nto actively developed anymore due to a change of name. See ScaleiO-py instead at https://github.com/swevm/scaleio-py
+
 
 ## Code examples
 
